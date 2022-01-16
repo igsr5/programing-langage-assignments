@@ -26,8 +26,8 @@ get_the_highest = head $ sortBy (flip $ comparing eval) table
 filter_by_not_minority_and_average = average $ map eval $ filter (\x -> minority x == "no") table
 
 -- (設問2) 課題で書く関数
-your_original_1 = 0
-your_original_2 = 0
+your_original_1 = average $ map age $ filter (\x -> minority x == "no") table
+your_original_2 = average $ map eval $ filter (\x -> gender x == "male") table
 
 -- エントリポイント ただし今回は触らなくて良い
 main = do
