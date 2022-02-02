@@ -115,10 +115,39 @@ pair(Y, X) :- validDuo(X, Y).
 ?- validDuo(ice, dragon).
 true .
 
-/* 実行結果 - (ノーマル、ゴースト)という複合タイプは存在しない */
+/* (ノーマル、ゴースト)という複合タイプは存在しない */
 ?- validDuo(normal, ghost).
 false.
 ```
 
 
 ## 2. 述語quadWeaknessの規則に追加して，4倍弱点のタイプを表す述語にしてください．
+
+私の実装した `quadWeakness` の定義と実行結果を下記に示す。
+
+```prolog
+/* 定義 */
+quadWeakness(Z, (X, Y)) :- pair(X, Y), X@>Y, superEffective(Z, X), superEffective(Z, Y).
+```
+
+```prolog
+/* 実行結果 - 水タイプが4倍になる複合タイプは下記の通り */****
+?- quadWeakness(water, (X, Y)).
+X = rock,
+Y = ground ;
+X = ground,
+Y = fire ;
+X = rock,
+Y = fire ;
+false.
+```
+
+`quadWeakness` が true となる条件は
+
+- X, Y の複合タイプが存在する (`pair`)
+- Z → X に対してこうかばつぐんである (`superEffective`)
+- Z → Y に対してこうかばつぐんである (`superEffective`)
+
+の3つである。これらの条件に加え `X@>Y` を定義しているのは、(X, Y) と (Y, X) の2つの組み合わせを同一の複合タイプとして扱うためである。
+
+実行結果を見ると水タイプが攻撃した際の4倍の複合タイプが正しく表示されていることがわかる。
